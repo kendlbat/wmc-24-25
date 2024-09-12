@@ -1,0 +1,85 @@
+### get all cars - 200
+GET http://localhost:8080/cars
+
+
+### get a single car - 200
+GET http://localhost:8080/cars/2
+
+### get a single car - should fail - 404
+GET http://localhost:8080/cars/324545
+
+
+### add new car successfully - 201
+POST http://localhost:8080/cars
+Content-Type: application/json
+x-api-key: 4s13a
+
+{
+  "name": "Tesla Model S"
+}
+
+
+### add new car - should fail - 400
+POST http://localhost:8080/cars
+Content-Type: application/json
+x-api-key: 4s13a
+
+{
+  "author": "Michael Cors"
+}
+
+### add new car - should fail - 403
+POST http://localhost:8080/cars
+Content-Type: application/json
+
+{
+  "name": "BMW 540"
+}
+
+### update car successfully - 200
+PUT http://localhost:8080/cars/2
+Content-Type: application/json
+x-api-key: 4s13a
+
+{
+  "name": "Mercedes S"
+}
+
+
+### update new car - should fail - 400
+PUT http://localhost:8080/cars/2
+Content-Type: application/json
+x-api-key: 4s13a
+
+{
+  "author": "Michael Cors"
+}
+
+### update new car - should fail - 403
+PUT http://localhost:8080/cars/2
+Content-Type: application/json
+
+{
+  "name": "BMW 540"
+}
+
+
+### update new car - should fail - 404
+PUT http://localhost:8080/cars/2324243
+Content-Type: application/json
+x-api-key: 4s13a
+
+{
+  "name": "BMW 540"
+}
+
+### delete a car successfully - 204
+DELETE http://localhost:8080/cars/2
+x-api-key: 4s13a
+
+### delete a nonexistant car - should fail - 404
+DELETE http://localhost:8080/cars/22342
+x-api-key: 4s13a
+
+### delete a car without api key - should fail - 403
+DELETE http://localhost:8080/cars/1
