@@ -1,0 +1,59 @@
+@startuml nocache
+title "Cache-Control: no-cache"
+participant "Client" as Client
+participant "Server" as Server
+
+
+Client -> Server: \
+GET /cars \n\
+Cache-Control: no-cache
+
+note right of Client
+    On its first request, the client does not
+    yet know the ETag / Data
+end note
+
+Server --> Client: \
+200 OK\n\
+etag: W/"27c-1WKiTMuPWXeK96XS1niSq7KNdUo"\n\
+content-length: 636\n\
+\n\
+[\
+  {\
+    "id": 1,\
+    "name": "Nissan Altima"\
+  },\
+  ...\
+]
+
+note left of Server
+  The server sends the full body
+end note
+
+Client -> Server: \
+GET /cars \n\
+Cache-Control: no-cache
+
+note right of Client
+    The Client does not send
+    the ETag / If-None-Match header
+end note
+
+Server --> Client: \
+200 OK\n\
+etag: W/"27c-1WKiTMuPWXeK96XS1niSq7KNdUo"\n\
+content-length: 636\n\
+\n\
+[\
+  {\
+    "id": 1,\
+    "name": "Nissan Altima"\
+  },\
+  ...\
+]
+
+note left of Server
+  The server sends the full body again
+end note
+
+@enduml

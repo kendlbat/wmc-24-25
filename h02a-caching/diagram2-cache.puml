@@ -1,0 +1,50 @@
+@startuml nocache
+title "If-None-Match / ETag used"
+participant "Client" as Client
+participant "Server" as Server
+
+
+Client -> Server: \
+GET /cars
+
+note right of Client
+    On its first request, the client does not
+    yet know the ETag / Data
+end note
+
+Server --> Client: \
+200 OK\n\
+etag: W/"27c-1WKiTMuPWXeK96XS1niSq7KNdUo"\n\
+content-length: 636\n\
+\n\
+[\
+  {\
+    "id": 1,\
+    "name": "Nissan Altima"\
+  },\
+  ...\
+]
+
+note left of Server
+  The server sends the full body
+end note
+
+Client -> Server: \
+GET /cars \n\
+If-None-Match: W/"27c-1WKiTMuPWXeK96XS1niSq7KNdUo"
+
+note right of Client
+    The Client sends the ETag
+    in the If-None-Match header
+end note
+
+Server --> Client: \
+304 Not modified\n\
+etag: W/"27c-1WKiTMuPWXeK96XS1niSq7KNdUo"\n\
+
+note left of Server
+  The server only needs to respond
+  with 304 Not modified
+end note
+
+@enduml

@@ -1,0 +1,10 @@
+### get all cars - with ETag
+GET http://localhost:8080/cars
+Cache-Control: no-cache
+
+### get all cars - and get new E-Tag
+GET http://localhost:8080/cars
+
+### get all cars - with ETag (set your E-Tag here)
+GET http://localhost:8080/cars
+If-None-Match: W/"185-32T5xcyksz5ZaaQ/IWPHI20mUZg"
