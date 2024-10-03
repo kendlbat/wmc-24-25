@@ -1,0 +1,35 @@
+@baseurl = http://localhost:8080/api
+
+### GET all messages 
+GET {{baseurl}}/messages
+
+### POST new message
+POST {{baseurl}}/messages
+Content-Type: application/json
+
+{
+    "user": "Alice",
+    "text": "Hi Bob"
+}
+
+### POST another message
+POST {{baseurl}}/messages
+Content-Type: application/json
+
+{
+    "user": "Bob",
+    "text": "Hello Alice!"
+}
+
+### GET all messages with id greater than 1
+### use this for fetching only newer messages the client already has
+### in case of short polling
+GET {{baseurl}}/messages?idGreaterThan=1
+
+
+### GET all messages with id greater than 1
+### and potentially wait if there is no such message
+### aka long polling
+GET {{baseurl}}/messages?idGreaterThan=1
+x-long-polling: true
+

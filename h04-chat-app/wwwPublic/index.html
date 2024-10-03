@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            rel="stylesheet"
+            href="./bootstrap-5.3.3-dist/css/bootstrap.css"
+        />
+        <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+
+        <title>Chat App</title>
+        <script src="client.js"></script>
+    </head>
+
+    <body onload="initClient()">
+        <div class="container-fluid">
+            <h1>Chat App</h1>
+
+            <div class="row mb-1">
+                <div class="col-8">
+                    <!-- <input
+                        id="btnLoad"
+                        class="btn btn-primary"
+                        type="button"
+                        value="Refresh"
+                        onclick="loadMessages()"
+                    /> -->
+                    <ul class="list-group" id="messageList"></ul>
+                </div>
+                <div class="col-4">
+                    <form action="#" method="post" id="msgForm">
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label for="user" class="form-label">User</label
+                                ><br />
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="user"
+                                    name="user"
+                                    value="johndoe"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label for="text" class="form-label">Text</label
+                                ><br />
+                                <textarea
+                                    type="text"
+                                    class="form-control"
+                                    id="text"
+                                    name="text"
+                                    rows="6"
+                                    placeholder="Type your message here..."
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mx-2">
+                            <input
+                                id="btnPostMsg"
+                                class="btn btn-primary"
+                                type="button"
+                                onClick="postMessage()"
+                                value="Post"
+                            />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
