@@ -46,11 +46,48 @@ Für Interessierte:
 
 ### 2.1 Resource Types
 
-> Was ist eine Ressource? Erklären Sie die Unterschiede zwischen einer _Main-Resource_, _Sub-Resource_ und einer _List-Resource_ anhand eines konkreten Beispiels. Im Beispiel sollten die URL-Angaben für die jeweiligen Ressourcen ersichtlich sein.
+> Was ist eine Ressource?
+
+Eine Ressource ist ein _Objekt_ mit:
+
+-   einem Typ
+-   zugehörigen Daten
+-   Beziehungen zu anderen Ressourcen
+-   Methoden, die darauf zugreifen
+
+Sie ist ähnlich des Objekts im OOP, jedoch mit dem wichtigen Unterschied, dass ausschließlich die standardisierten HTTP Methoden (GET, POST, PUT, etc.) verwendet werden können.
+
+Hilfreich: https://restful-api-design.readthedocs.io
+
+> Erklären Sie die Unterschiede zwischen einer _Main-Resource_, _Sub-Resource_ und einer _List-Resource_ anhand eines konkreten Beispiels. Im Beispiel sollten die URL-Angaben für die jeweiligen Ressourcen ersichtlich sein.
+
+Es gibt sogenannte _Singleton_-Ressourcen (Main), wie beispielsweise `/users/124151` und _Collection_-Ressourcen (List) wie `/customers`.
+Zusätzlich können Ressourcen auch in Abhängigkeit zu hierarchisch höher-liegenden Ressourcen abrufbar sein, diese werden dann als _Sub_-Ressourcen bezeichnet. Beispiel: `/users/124151/emails` oder `/users/124151/chats/5151`.
 
 ### 2.2 Path Parameter
 
 > Was sind _path parameter_ im Zusammenhang mit einer REST API? Erklären Sie mit Hilfe eines konkreten Beispiels.
+
+Path-Parameter sind Variablen, welche direkt über den _URL_-teil des _URI_ (_Uniform Resource Identifier_) übergeben werden.
+Diese werden üblicherweise mit Doppelpunkt (`/users/:id`) oder geschwungenen Klammern (`/users/{id}`) markiert.
+
+In unserem Beispiel kann Nutzer `John Doe` mit der Id `124151` wie folgt abgerufen werden:
+
+```http
+GET /users/124151 HTTP/1.1
+Accept: application/json
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "id": 124151,
+    "firstname": "John",
+    "lastname": "Doe"
+}
+```
 
 ### 2.3 Query Parameter
 
