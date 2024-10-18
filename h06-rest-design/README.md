@@ -68,13 +68,13 @@ Zusätzlich können Ressourcen auch in Abhängigkeit zu hierarchisch höher-lieg
 
 > Was sind _path parameter_ im Zusammenhang mit einer REST API? Erklären Sie mit Hilfe eines konkreten Beispiels.
 
-Path-Parameter sind Variablen, welche direkt über den _URL_-teil des _URI_ (_Uniform Resource Identifier_) übergeben werden.
-Diese werden üblicherweise mit Doppelpunkt (`/users/:id`) oder geschwungenen Klammern (`/users/{id}`) markiert.
+Path-Parameter sind Variablen, welche einen direkten Teil des URL-Pfades darstellen.
+Diese werden üblicherweise mit Doppelpunkt (`/users/:id`) oder geschwungenen Klammern (`/users/{id}`) markiert und stellen **unbedingt notwendige Parameter** dar.
 
 In unserem Beispiel kann Nutzer `John Doe` mit der Id `124151` wie folgt abgerufen werden:
 
 ```http
-GET /users/124151 HTTP/1.1
+GET https://example.com/users/124151 HTTP/1.1
 Accept: application/json
 ```
 
@@ -85,13 +85,42 @@ Content-Type: application/json
 {
     "id": 124151,
     "firstname": "John",
-    "lastname": "Doe"
+    "lastname": "Doe",
+    "birthdate": "2001-01-01"
 }
 ```
 
 ### 2.3 Query Parameter
 
 > Was sind _query parameter_ im Zusammenhang mit einer REST API? Erklären Sie mit Hilfe eines konkreten Beispiels.
+
+Query-Parameter werden optional nach einem `?` in dem URL übergeben. Sie bestehen aus _Key-Value_ Paaren, wobei Schlüssel und Wert durch ein `=` getrennt sind und Paare durch `&` voneinander unterschieden werden. Üblicherweise werden Query-Parameter für **optionale Parameter** verwendet, ohne welche die Anfrage trotzdem valide bleibt.
+In unserem Beispiel könnten wir die Nutzer der Applikation nach ihrem Geburtsjahr filtern:
+
+```http
+GET https://example.com/users?birthyear=2001 HTTP/1.1
+Accept: application/json
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+    {
+        "id": 124151,
+        "firstname": "John",
+        "lastname": "Doe",
+        "birthdate": "2001-01-01"
+    },
+    {
+        "id": 124152,
+        "firstname": "Susi",
+        "lastname": "Doe",
+        "birthdate": "2001-02-28"
+    }
+]
+```
 
 ### 2.4 POST vs. PUT vs. PATCH
 
