@@ -124,8 +124,32 @@ Content-Type: application/json
 
 ### 2.4 POST vs. PUT vs. PATCH
 
-> Erklären Sie die Unterschiede dieser HTTP-Methoden im Zusammenhang mit einer REST-API.  
+> Erklären Sie die Unterschiede dieser HTTP-Methoden im Zusammenhang mit einer REST-API.
+
+Die HTTP-Methoden `POST`, `PUT` und `PATCH` werden von unerfahrenen Programmierer:innen häufig als äquivalent angesehen und austauschbar verwendet.
+
+Grundlegend stehen diese drei Methoden zusammen mit `GET` und `DELETE` für die verschiedenen _CRUD_-Operationen, welche aus der Datenbankentwicklung stammen.
+
+-   `POST` - **C**reate
+-   `GET` - **R**ead
+-   `PUT` / `PATCH` - **U**pdate
+-   `DELETE` - **D**elete
+
+Der Unterschied zwischen `PUT` und `PATCH` besteht lediglich darin, dass bei `PUT` die gesamte Ressource _ersetzt_ wird, bei `PATCH` hingegen werden einzelne Attribute der Ressource neu gesetzt.
+
+Quelle: https://stackoverflow.com/a/40711235
+
 > Erklären Sie, welche der Methoden _idempotent_ sind und warum.
+
+Idempotenz bedeutet, dass eine Operation mehrmals ausgeführt werden kann, ohne das Ergebnis über die initiale Auswirkung hinaus zu verändern.  
+Jede Methode _kann_ idempotent sein, ob sie es auch sein _muss_ wird in [RFC2616](https://www.rfc-editor.org/rfc/rfc2616) festgelegt.
+
+| Methode | Idempotent | Begründung                                                                                                                                                                                       |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| POST    |            | `POST` Anfragen dürfen auch andere Auswirkungen haben als lediglich eine Ressource zu erstellen. Diese _side-effects_ können sich jederzeit verändern.                                           |
+| PUT     | x          | Die derzeitige Ressource wird vollständig ersetzt. Nach der Überschreibung liegt jedes Mal die gleiche Ressource vor, sofern die Anfrage gleich geblieben ist.                                   |
+| PATCH   |            | Je nachdem, _wie_ die Änderung formuliert ist, kann Idempotenz vorliegen. Wenn die PATCH-Anfrage {change: 'Stock' add: -1} vorliegt, würde jede weitere Anfrage die Stückzahl weiter verringern. |
+
 > Beantworten Sie klar, wie die jeweiligen Methoden eine mögliche _resource creation_ prozessieren.
 > Klären Sie diese Aspekte möglichst unter der Berücksichtigung konkreter Beispiele und deren Status-Antwortcodes.
 
