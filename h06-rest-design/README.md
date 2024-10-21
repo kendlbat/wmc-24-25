@@ -144,23 +144,151 @@ Quelle: https://stackoverflow.com/a/40711235
 Idempotenz bedeutet, dass eine Operation mehrmals ausgeführt werden kann, ohne das Ergebnis über die initiale Auswirkung hinaus zu verändern.  
 Jede Methode _kann_ idempotent sein, ob sie es auch sein _muss_ wird in [RFC2616](https://www.rfc-editor.org/rfc/rfc2616) festgelegt.
 
-| Methode | Idempotent | Begründung                                                                                                                                                                                       |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| POST    |            | `POST` Anfragen dürfen auch andere Auswirkungen haben als lediglich eine Ressource zu erstellen. Diese _side-effects_ können sich jederzeit verändern.                                           |
-| PUT     | x          | Die derzeitige Ressource wird vollständig ersetzt. Nach der Überschreibung liegt jedes Mal die gleiche Ressource vor, sofern die Anfrage gleich geblieben ist.                                   |
-| PATCH   |            | Je nachdem, _wie_ die Änderung formuliert ist, kann Idempotenz vorliegen. Wenn die PATCH-Anfrage {change: 'Stock' add: -1} vorliegt, würde jede weitere Anfrage die Stückzahl weiter verringern. |
+| Methode | Idempotent | Begründung                                                                                                                                                                                                |
+| ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST    |            | `POST` Anfragen dürfen auch andere Auswirkungen haben als lediglich eine Ressource zu erstellen. Diese _side-effects_ können sich jederzeit verändern.                                                    |
+| PUT     | x          | Die derzeitige Ressource wird vollständig ersetzt. Nach der Überschreibung liegt jedes Mal die gleiche Ressource vor, sofern die Anfrage gleich geblieben ist.                                            |
+| PATCH   |            | Je nachdem, _wie_ die Änderung formuliert ist, kann Idempotenz vorliegen. Wenn die PATCH-Anfrage `{ "change": "stock", "add": -1 }` vorliegt, würde jede weitere Anfrage die Stückzahl weiter verringern. |
 
 > Beantworten Sie klar, wie die jeweiligen Methoden eine mögliche _resource creation_ prozessieren.
 > Klären Sie diese Aspekte möglichst unter der Berücksichtigung konkreter Beispiele und deren Status-Antwortcodes.
+
+#### POST
+
+Nach einer erfolgreichen Anlage _sollte_ die Response den Status-Code `201 CREATED` liefern. Weiters sollte auch ein `Location`-Header vorhanden sein, der auf die gerade erstellte Ressource verweist.
+Sollte die Ressource nicht durch eine URL identifizierbar sein, sind auch entweder Status `200 OK` oder `204 NO CONTENT` angemessen.
+
+##### Beispiel 1 - `201 CREATED`
+
+```http
+POST https://example.com/users HTTP/1.1
+
+{
+    "name": "John",
+    "dob": "2000-01-01T080808Z
+}
+```
+
+```http
+HTTP/1.1 201 CREATED
+Location: /users/2
+```
+
+##### Beispiel 2 - `204 NO CONTENT`
+
+```http
+POST https://example.com/users HTTP/1.1
+
+{
+    "name": "John",
+    "dob": "2000-01-01T080808Z
+}
+```
+
+```http
+HTTP/1.1 204 NO CONTENT
+```
+
+_Notiz: `NO CONTENT` wird retourniert, aber die Ressource wurde trotzdem erfolgreich erstellt. Das kann sein, wenn die Ressource zwar zu einer Collection hinzugefügt wird, aber keine eigenständige ID bekommt._
+
+#### PUT
+
+Wurde durch ein `PUT` eine neue Ressource erstellt, _muss_ der Status-Code `201 CREATED` retourniert werden.
+Wenn eine bestehende Ressource verändert wurde, kann entweder `200 OK` oder `204 NO CONTENT` verwendet werden.
+
+```http
+PUT https://example.com/users/2 HTTP/1.1
+
+{
+    "name": "John",
+    "dob": "2000-01-01T080808Z
+}
+```
+
+```http
+HTTP/1.1 200 OK
+```
+
+#### PATCH
+
+Durch ein `PATCH` können ausschließlich bereits bestehende Ressourcen verändert werden.  
+Für JSON-Daten kann hier das [_JSON Patch_](https://jsonpatch.com/) Format verwendet werden, welches die Änderungen in einem Array speichert.
+
+Bestehende Daten:
+
+```json
+{
+   "2": {
+       "name": "John",
+       "dob": "2000-01-01T080808Z,
+       "social_credit": 800
+   }
+}
+```
+
+```http
+PATCH https://example.com/users/2 HTTP/1.1
+
+[
+    {
+        "op": "add",
+        "path": "/social_credit",
+        "value": -200
+    }
+]
+
+```
+
+```http
+HTTP/1.1 200 OK
+```
 
 ### 2.5 Benennung von Ressourcen
 
 > Nennen Sie jeweils drei grundsätzliche _Do's_ und _Dont's_ für die Benennung von Ressourcen (Design der URL). Geben Sie bei jedem Punkt auch ein konkretes Beispiel an.
 
+#### Do's
+
+-   Klare und verständliche Benennung
+    `/users` statt `/u`
+-   Verwendung von Sub-Ressourcen
+    `/users/124151/emails`
+
+-   Verwendung von Singular statt Plural
+    `/user/124151`
+
+#### Dont's
+
+-   Verwendung von Verben
+    `/createUser` statt `/users`
+-   Verwendung von Großbuchstaben
+    `/Users` statt `/users`
+-   Falsche Verwendung von HTTP-Methoden
+    `GET /users/124151/delete` statt `DELETE /users/124151`
+
 ### 2.6 REST Prinzipien
 
 > Benennen und erklären Sie vier Prinzipien, die ein REST-Interface klassischerweise verfolgt.
 
+-   **Addressierbarkeit**
+    Jede Ressource muss über eine eindeutige URL erreichbar sein.
+-   **Zustandslosigkeit**
+    Jede Anfrage muss alle Informationen enthalten, die für die Verarbeitung notwendig sind.
+-   **Entkopplung**
+    Server und Client sind voneinander unabhängig und können sich unabhängig voneinander weiterentwickeln. Darstellungen und Daten sind getrennt.
+-   **Uniform Interface**
+    Auf REST wird immer über einen einheitlichen Satz von Operationen zugegriffen. Dieser Satz ist unabhängig von der Ressource und wird durch die HTTP-Methoden definiert.
+
 ### 2.7 Richardson Maturity Model
 
 > Erklären Sie im RMM Level 0 bis 2. Klären Sie darüber hinaus, welcher Zweck mit Level 3 verfolgt wird.
+
+-   **Level 0 - The Swamp of POX**
+    HTTP wird eigentlich nur als Transportprotokoll verwendet, ohne die spezifischen Methoden zu nutzen. Alle Anfragen werden über `POST` gesendet.
+-   **Level 1 - Resources**
+    Es werden Ressourcen definiert und über die URL angesprochen. Die HTTP-Methoden werden jedoch noch nicht verwendet.
+-   **Level 2 - HTTP Verbs**
+    Die HTTP-Methoden werden verwendet, um die CRUD-Operationen zu definieren.
+-   **Level 3 - Hypermedia Controls**
+    Die API enthält neben den Daten auch Links zu anderen Ressourcen. (`HATEOAS` - Hypermedia as the engine of application state) Dadurch wird die API selbstbeschreibend und der Client kann sich selbstständig durch die API navigieren.
+    Durch die Verwendung von Hypermedia wird die API flexibler und Clients können sich dynamisch an Änderungen anpassen.
