@@ -1,0 +1,152 @@
+@baseurl = http://localhost:3000/api/
+@testAuthor = a8ce1c11-6814-4b92-afe3-68306db2d885
+@testBook = 23e02fa8-a1c5-4cff-acd0-6c0e024966f1
+@testBookstore = 2863417d-7d5c-4fe7-82d1-e8181f1da50a
+
+
+###
+GET {{baseurl}}authors HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+GET {{baseurl}}authors/{{testAuthor}} HTTP/1.1
+Accept: application/json
+
+# 200 OK 
+
+###
+GET {{baseurl}}authors/{{testAuthor}}/books HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+POST {{baseurl}}authors HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstname": "Andreas",
+    "lastname": "Starzacher"
+}
+
+# 201 Created
+###
+PUT {{baseurl}}authors/{{testAuthor}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstname": "Zweiglas",
+    "lastname": "Adamus"
+}
+
+# 204 No Content
+
+###
+DELETE {{baseurl}}authors/{{testAuthor}} HTTP/1.1
+
+# 204 No Content
+
+###
+GET {{baseurl}}books HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+GET {{baseurl}}books/{{testBook}} HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+GET {{baseurl}}books/{{testBook}}/bookstores HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+POST {{baseurl}}books HTTP/1.1
+Content-Type: application/json
+
+{
+    "isbn": "9783492253499",
+    "title": "Momo",
+    "author": "b687e32f-0755-474e-9280-cc4786795907"
+}
+
+# 201 Created
+
+###
+PUT {{baseurl}}books/{{testBook}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "isbn": "9781529034585",
+    "title": "DIIIIRK",
+    "author": "a8ce1c11-6814-4b92-afe3-68306db2d885"
+}
+
+# 204 No Content
+
+### 
+DELETE {{baseurl}}books/{{testBook}} HTTP/1.1
+
+# 204 No Content
+
+###
+GET {{baseurl}}bookstores HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+GET {{baseurl}}bookstores/{{testBookstore}} HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+GET {{baseurl}}bookstores/{{testBookstore}}/books HTTP/1.1
+Accept: application/json
+
+# 200 OK
+
+###
+POST {{baseurl}}bookstores HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Thalia Villach - Atrio",
+    "address": "Kärntner Straße 34, 9500 Villach"
+}
+
+# 201 Created
+
+###
+PUT {{baseurl}}bookstores/{{testBookstore}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "ThaLILA Klafu",
+    "address": "Draubrücke 11, 9020 Klagingen"
+}
+
+# 204 No Content
+
+###
+POST {{baseurl}}bookstores/{{testBookstore}}/books/d99d8158-5a2f-455f-839d-45aa786a9665 HTTP/1.1
+Content-Type: application/json
+
+# 204 No Content
+
+###
+DELETE {{baseurl}}bookstores/{{testBookstore}}/books/{{testBook}} HTTP/1.1
+
+# 204 No Content
+
+###
+DELETE {{baseurl}}bookstores/{{testBookstore}} HTTP/1.1
+
+# 204 No Content
