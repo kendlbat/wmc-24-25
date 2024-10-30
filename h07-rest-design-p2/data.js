@@ -1,9 +1,24 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 
+/**
+ * @type {[id: string]: Author}
+ */
 const authors = {};
+
+/**
+ * @type {[id: string]: Book}
+ */
 const books = {};
+
+/**
+ * @type {[id: string]: Bookstore}
+ */
 const bookstores = {};
+
+/**
+ * @type {{book: string, bookstore: string}[]}
+ */
 let bookstoresBooks = [];
 
 const data = {

@@ -225,11 +225,23 @@ JSON-Merge-Patch:
 ## 6 - Generierung von Ressourcen-IDs
 
 > -   Welche (zwei) Arten von Schlüsseln können als Ids für Ressourcen in REST verwendet werden?
+
+Logische Schlüssel (ergeben sich aus dem Objekt heraus) oder technische Schlüssel (werden generiert).
+
 > -   Welche der beiden Schlüsselarten kann am Server, welche am Client generiert werden?
+
+Logische Schlüssel können von beiden Seiten generiert werden, technische Schlüssel nur vom Server.
+
 > -   Welche Probleme können bei der jeweiligen Variante entstehen und wie kann man diese lösen bzw. mildern?
+
+Bei der Verwendung von technischen Schlüsseln können Konflikte entstehen, wenn zwei Clients gleichzeitig eine Ressource erstellen wollen. Dies kann durch die Verwendung von UUIDs gelöst werden.
+
+Bei logischen Schlüsseln kann es zu Problemen kommen, wenn sich die Logik ändert und die Schlüssel nicht mehr eindeutig sind. Dies kann durch die Verwendung von technischen Schlüsseln gelöst werden.
+
 > -   Wenn die Id am Client generiert wird, mit welcher HTTP Methode sollte die Ressource folglich erzeugt werden?
+
+PUT
+
 > -   Wenn die Id am Server generiert wird, mit welcher HTTP Methode sollte die Ressource folglich erzeugt werden?
 
-```
-
-```
+POST

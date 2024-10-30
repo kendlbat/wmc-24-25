@@ -1,30 +1,28 @@
+interface ObjectWithId {
+    id: string;
+}
+
 interface ProtoBook {
     isbn: string;
     title: string;
     author: string;
 }
 
-interface Book extends ProtoBook {
-    id: string;
-}
+interface Book extends ProtoBook, ObjectWithId {}
 
 interface ProtoAuthor {
     firstname: string;
     lastname: string;
 }
 
-interface Author extends ProtoAuthor {
-    id: string;
-}
+interface Author extends ProtoAuthor, ObjectWithId {}
 
 interface ProtoBookstore {
     name: string;
     address: string;
 }
 
-interface Bookstore extends ProtoBookstore {
-    id: string;
-}
+interface Bookstore extends ProtoBookstore, ObjectWithId {}
 
 interface BookLinks {
     self: string;
