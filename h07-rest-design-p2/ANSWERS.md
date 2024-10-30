@@ -73,6 +73,10 @@ Siehe [optimistic-locking.md](optimistic-locking.md).
 
 > Beschreiben Sie die grundsätzliche Idee des JSON Patch Formates. Gehen Sie dabei auf den Aufbau des JSON Patch Format ein und erörten Sie, in welchen Fällen dieses Format verwendet werden sollte?
 
+JSON Patch ist ein Format, das verwendet wird, um Änderungen an einem JSON-Objekt zu beschreiben. Es besteht aus einer Liste von Operationen, die auf das JSON-Objekt angewendet werden sollen.
+JSON Patch ist dann sinnvoll, wenn nur eine kleine Anzahl von Änderungen an einem JSON-Objekt vorgenommen werden sollen.
+Ein JSON Patch Dokument ist eine JSON-Liste aus Operationen, die aus `op`, `path`, `value` und `from` bestehen. `op` und `path` sind Pflichtfelder, `value` und `from` sind je nach Operation optional.
+
 ## 5 - JSON Merge Patch vs. JSON Patch
 
 > Beschreiben Sie den Unterschied zwischen den Formaten sowohl anhand des vorgegebenen und zusätzlich anhand eines selbst gewählten Beispiels.
@@ -97,6 +101,127 @@ Siehe [optimistic-locking.md](optimistic-locking.md).
 > Überprüfen Sie Ihre Lösung mit einem Online-Editor wie https://jsonpatch.me/
 > Ihr selbst gewähltes Beispiel sollte eine ähnliche Komplexität aufweisen.
 
+JSON-Patch:
+
+```json
+[
+    {
+        "op": "replace",
+        "path": "/lastname",
+        "value": "VIII"
+    },
+    {
+        "op": "remove",
+        "path": "/firstname"
+    },
+    {
+        "op": "add",
+        "path": "/birthdate",
+        "value": "1491-06-28"
+    },
+    {
+        "op": "remove",
+        "path": "/hobbies/2"
+    },
+    {
+        "op": "add",
+        "path": "/hobbies/-",
+        "value": "Writing"
+    }
+]
+```
+
+JSON-Merge-Patch:
+
+```json
+{
+    "lastname": "VIII",
+    "birthdate": "1491-06-28",
+    "hobbies": ["Hunting", "Playing chess", "Writing"]
+}
+```
+
+Nachteil von JSON-Merge-Patch ist, dass das Array bekannt sein muss um es zu verändern.
+JSON-Patch ist flexibler, dafür aber etwas komplexer.
+
+### Eigenes Beispiel
+
+```json
+{
+    "firstname": "Tobias",
+    "lastname": "Kendlbacher",
+    "age": 18,
+    "orders": [
+        {
+            "id": 1,
+            "product": "Laptop",
+            "price": 1000
+        },
+        {
+            "id": 2,
+            "product": "Smartphone",
+            "price": 500
+        }
+    ]
+}
+```
+
+-   Änderung des Vornamens auf "Tobi"
+-   Änderung des Alters auf das Geburtsjahr
+-   Hinzufügen einer neuen Bestellung
+-   Entfernen der ersten Bestellung
+
+JSON-Patch:
+
+```json
+[
+    {
+        "op": "replace",
+        "path": "/firstname",
+        "value": "Tobi"
+    },
+    {
+        "op": "replace",
+        "path": "/age",
+        "value": 2006
+    },
+    {
+        "op": "add",
+        "path": "/orders/-",
+        "value": {
+            "id": 3,
+            "product": "Tablet",
+            "price": 300
+        }
+    },
+    {
+        "op": "remove",
+        "path": "/orders/0"
+    }
+]
+```
+
+JSON-Merge-Patch:
+
+```json
+{
+    "firstname": "Tobi",
+    "age": 2006,
+    "orders": [
+        {
+            "id": 2,
+            "product": "Smartphone",
+            "price": 500
+        },
+        {
+            "id": 3,
+            "product": "Tablet",
+            "price": 300
+        }
+    ]
+}
+```
+
 ## 6 - Generierung von Ressourcen-IDs
 
 > -   Welche (zwei) Arten von Schlüsseln können als Ids für Ressourcen in REST verwendet werden?
@@ -104,3 +229,7 @@ Siehe [optimistic-locking.md](optimistic-locking.md).
 > -   Welche Probleme können bei der jeweiligen Variante entstehen und wie kann man diese lösen bzw. mildern?
 > -   Wenn die Id am Client generiert wird, mit welcher HTTP Methode sollte die Ressource folglich erzeugt werden?
 > -   Wenn die Id am Server generiert wird, mit welcher HTTP Methode sollte die Ressource folglich erzeugt werden?
+
+```
+
+```
