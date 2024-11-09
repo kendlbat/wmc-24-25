@@ -1,0 +1,8 @@
+@baseurl = http://127.0.0.1:8080/api
+
+### GET all facilities
+GET {{baseurl}}/facilities
+
+### GET facility by id - id needs to be adapted of course
+GET {{baseurl}}/facilities/65340d239a4ecfcfba658bc4
+

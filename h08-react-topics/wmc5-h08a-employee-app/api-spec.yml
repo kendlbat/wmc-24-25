@@ -1,0 +1,138 @@
+openapi: "3.0.3"
+info:
+  title: Employee App Backend
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+tags:
+  - name: employees
+    description: All operations related to employees
+  - name: facilities
+    description: All operations related to facilities
+
+paths:
+  /employees:
+    get:
+      tags:
+        - employees
+      description: returns all employees with paging and support of embedding referenced resources
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+          required: false
+          description: The number of items to skip before starting to collect the result set.
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+          required: false
+          description: The number of items to return.
+        - $ref: "#/components/parameters/paramEmbed"
+
+      responses:
+        "200":
+          description: everything ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Employee"
+
+  /facilities:
+    get:
+      tags:
+        - facilities    
+      description: returns all facilities
+      responses:
+        "200":
+          description: everything ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Facility"
+
+components:
+  parameters:
+    paramEmbed:
+      in: query
+      name: embed
+      schema:
+        type: string
+        example: (currentFacility)
+      required: false
+      description: Controls to embed the referenced resource instead of providing its identifier. Can contain multiple properties separated by commas.
+
+  schemas:
+    Employee:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - currentFacility      
+      properties:
+        firstName:
+          type: string
+          example: Felix
+        lastName:
+          type: string
+          example: Bauer
+        email:
+          type: string
+          example: felix.bauer@acme.com
+        currentFacility:
+          oneOf:
+            - $ref: "#/components/schemas/ResourceId"
+            - $ref: "#/components/schemas/Facility"
+      allOf:
+        - $ref: "#/components/schemas/EveryResource"
+
+    Facility:
+      type: object
+      required:
+        - title
+        - city
+        - zipCode
+        - street
+      properties:
+        title:
+          type: string
+          example: Facility A
+        city:
+          type: string
+          example: Villach
+        zipCode:
+          type: integer
+          example: 9500
+        street:
+          type: string
+          example: Tschinowitscher Weg 5
+      allOf:
+        - $ref: "#/components/schemas/EveryResource"
+
+    EveryResource:
+      type: object
+      properties:
+        _id:
+          $ref: "#/components/schemas/ResourceId"
+        __v:
+          type: integer
+          example: 0
+          description: version information that is incremented on each change
+
+    ResourceId:
+      type: string
+      example: 672545577eea461f9c0ad368
+      description: the unique identifier of the resource

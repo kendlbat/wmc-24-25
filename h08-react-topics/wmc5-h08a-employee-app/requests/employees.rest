@@ -1,0 +1,22 @@
+@baseurl = http://127.0.0.1:8080/api
+
+### GET all 186 employees
+GET {{baseurl}}/employees
+
+### GET all employees using paging - 10 results starting at offset 0
+GET {{baseurl}}/employees?limit=10&offset=0
+
+### GET employees using paging - 20 results starting at offset 40
+GET {{baseurl}}/employees?limit=20&offset=40
+
+### GET with negative limit - bad request
+GET {{baseurl}}/employees?limit=-10&offset=0
+
+### GET with negative offset - bad request
+GET {{baseurl}}/employees?limit=20&offset=-10
+
+### GET two employees named Hans
+GET {{baseurl}}/employees?limit=2&offset=2&firstName=Hans
+
+### GET all employees with embedded currentFacility object
+GET {{baseurl}}/employees?embed=(currentFacility)

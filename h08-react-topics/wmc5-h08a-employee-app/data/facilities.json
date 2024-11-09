@@ -1,0 +1,62 @@
+[
+    {
+        "title": "Facility A",
+        "zipCode": "10115",
+        "city": "Berlin",
+        "street": "Musterstraße 1"
+    },
+    {
+        "title": "Facility B",
+        "zipCode": "20095",
+        "city": "Hamburg",
+        "street": "Beispielweg 5"
+    },
+    {
+        "title": "Facility C",
+        "zipCode": "80331",
+        "city": "München",
+        "street": "Beispielstraße 10"
+    },
+    {
+        "title": "Facility D",
+        "zipCode": "50667",
+        "city": "Köln",
+        "street": "Ringstraße 15"
+    },
+    {
+        "title": "Facility E",
+        "zipCode": "04109",
+        "city": "Leipzig",
+        "street": "Bahnhofstraße 20"
+    },
+    {
+        "title": "Facility F",
+        "zipCode": "01067",
+        "city": "Dresden",
+        "street": "Hauptstraße 25"
+    },
+    {
+        "title": "Facility G",
+        "zipCode": "70173",
+        "city": "Stuttgart",
+        "street": "Karlstraße 30"
+    },
+    {
+        "title": "Facility H",
+        "zipCode": "49074",
+        "city": "Osnabrück",
+        "street": "Lange Straße 35"
+    },
+    {
+        "title": "Facility I",
+        "zipCode": "90403",
+        "city": "Nürnberg",
+        "street": "Altstadtweg 40"
+    },
+    {
+        "title": "Facility J",
+        "zipCode": "28195",
+        "city": "Bremen",
+        "street": "Rathausplatz 45"
+    }
+]
