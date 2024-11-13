@@ -30,7 +30,11 @@ const getAll = async (req, resp) => {
         });
 
         // Embed is in the form of "(currentFacility,department)"
-        if (embed && embed.match(/^\(.*\)$/)) {
+        if (embed) {
+            if (!embed.startsWith("(") || !embed.endsWith(")")) {
+                return resp.status(400).send("Invalid embed");
+            }
+
             let embedFields = embed
                 .replace(/^\(/, "")
                 .replace(/\)$/, "")
