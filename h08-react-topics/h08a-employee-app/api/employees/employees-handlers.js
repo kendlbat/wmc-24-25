@@ -30,10 +30,10 @@ const getAll = async (req, resp) => {
         });
 
         // Embed is in the form of "(currentFacility,department)"
-        if (embed) {
+        if (embed && embed.match(/^\(.*\)$/)) {
             let embedFields = embed
-                .replace("(", "")
-                .replace(")", "")
+                .replace(/^\(/, "")
+                .replace(/\)$/, "")
                 .split(",");
             embedFields.forEach((field) => {
                 query.populate(field);
