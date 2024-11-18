@@ -1,0 +1,49 @@
+
+@baseurl = http://127.0.0.1:8080
+@session-id = f412f4748a92c9159e2972a3f145f860
+
+
+### Login with non-disabled user and correct password
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "alice", "password": "always" 
+}
+
+### Login with disabled user and correct password
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "bob", "password": "hash" 
+}
+
+### Login with non-disabled user and incorrect password
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "charlie", "password": "passssword" 
+}
+
+
+### Read resource - requires role student, tutor or professor
+GET {{baseurl}}/api/secure-resource
+Cookie: session-id={{session-id}}
+
+
+### Write resource - requires tutor or professor
+POST {{baseurl}}/api/secure-resource
+Content-Type: application/json
+Cookie: session-id={{session-id}}
+
+{
+    "text": "some data"
+}
+
+
+### Logout
+POST {{baseurl}}/auth/logout
+Cookie: session-id={{session-id}}
+

@@ -1,0 +1,23 @@
+{
+  "name": "ex-secure-app",
+  "version": "1.0.0",
+  "description": "example app for authentication and authorization",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "KON+KAA",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "winston": "^3.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.5"
+  }
+}
