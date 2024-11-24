@@ -1,0 +1,58 @@
+
+@baseurl = http://127.0.0.1:8080
+
+### Login with non-disabled user and correct password
+# @name loginRequest
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "alice", "password": "always" 
+}
+
+### save response in variable
+@accessToken = {{loginRequest.response.body.$.access_token}}
+
+### Login with disabled user and correct password
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "bob", "password": "hash" 
+}
+
+### Login with non-disabled user and incorrect password
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "charlie", "password": "passssword" 
+}
+
+
+### Read resource - requires role student, tutor or professor
+GET {{baseurl}}/api/secure-resource
+Authorization: Bearer {{accessToken}}
+
+### Read resource with token and invalid signature
+GET {{baseurl}}/api/secure-resource
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZWN1cmUtYXBwIiwiaWF0IjoxNzMxNTczODIzLCJleHAiOjE3MzE1NzQwMDMsInN1YiI6ImFsaWNlIiwianRpIjoiMzc4YmQwMDUtN2Q3OC00Y2ZhLWEzMzktMzllMzllMTA5YTdlIiwicm9sZXMiOlsic3R1ZGVudCIsInR1dG9yIl19.OJirSGZcxvWP_G2pLczeI9FO_5uwGA-BcaglTtMEhwk
+
+### Read resource with expired token
+GET {{baseurl}}/api/secure-resource
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJzdHVkZW50IiwidHV0b3IiXSwiaWF0IjoxNzMyNDYxODI3LCJleHAiOjE3MzI0NjE4MjcsImlzcyI6InNlY3VyZS1hcHAiLCJzdWIiOiJhbGljZSIsImp0aSI6Ijk0YWY0ZjRjLWQ3MzQtNGZiMy05ZGViLWY1NjE4YjdlNzdkMyJ9.GyJf8iIjweN4Sz1tTuzD3vPVOw_FeS-ZxJzHHYdc7iI
+
+### Write resource - requires tutor or professor
+POST {{baseurl}}/api/secure-resource
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "text": "some data"
+}
+
+
+### Logout
+POST {{baseurl}}/auth/logout
+Authorization: Bearer {{accessToken}}
+

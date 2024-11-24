@@ -1,0 +1,36 @@
+@baseurl = http://127.0.0.1:8080
+
+### Lock user alice
+PATCH {{baseurl}}/users/alice
+Content-Type: application/merge-patch+json
+
+{
+    "locked": true
+}
+
+### Unlock user alice
+PATCH {{baseurl}}/users/alice
+Content-Type: application/merge-patch+json
+
+{
+    "locked": false
+}
+
+### Set roles of user alice to student
+PATCH {{baseurl}}/users/alice
+Content-Type: application/merge-patch+json
+
+{
+    "roles": ["student"]
+}
+
+### Set roles of user alice to professor
+PATCH {{baseurl}}/users/alice
+Content-Type: application/merge-patch+json
+
+{
+    "roles": ["professor"]
+}
+
+### delete user alice
+DELETE {{baseurl}}/users/alice
