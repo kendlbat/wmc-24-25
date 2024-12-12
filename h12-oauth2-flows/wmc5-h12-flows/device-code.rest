@@ -1,0 +1,71 @@
+# Device Code Flow
+
+# see https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-device-code
+# for details
+
+
+# Tenant htl-villach.at
+@tenantId=2b197efa-8e1b-4680-b263-8e237889b5b3
+
+# Name of the registered app
+@clientId=4769ca77-a9e9-45e2-b52c-e66f89f898cd
+
+# What kind of authorizations are requested?
+@scope={{clientId}}/.default openid profile offline_access
+
+
+
+### Start Device Code Flow
+
+# @name authRequest
+POST https://login.microsoftonline.com/{{tenantId}}/oauth2/v2.0/devicecode
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{clientId}}&scope={{scope}}
+
+### save response in variables
+
+@userCode = {{authRequest.response.body.$.user_code}}
+@deviceCode = {{authRequest.response.body.$.device_code}}
+
+
+
+### Poll for authorization result
+
+# @name authResult
+POST https://login.microsoftonline.com/{{tenantId}}/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=urn:ietf:params:oauth:grant-type:device_code&client_id={{clientId}}&scope={{scope}}&device_code={{deviceCode}}
+
+
+### save tokens in variables
+@accessToken = {{authResult.response.body.$.access_token}}
+@idToken = {{authResult.response.body.$.id_token}}
+@refreshToken = {{authResult.response.body.$.refresh_token}}
+
+
+### Authenticate via Browser
+### https://microsoft.com/devicelogin
+
+
+
+
+### Send request to own API using access token
+GET http://127.0.0.1:8080/api/info
+Authorization: Bearer {{accessToken}}
+
+
+
+### Refresh Token
+# @name authResult2
+POST https://login.microsoftonline.com/{{tenantId}}/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&client_id={{clientId}}&scope={{scope}}&refresh_token={{refreshToken}}
+
+
+### save refreshed tokens in variables
+@accessToken = {{authResult2.response.body.$.access_token}}
+@idToken = {{authResult.response.body.$.id_token}}
+@refreshToken = {{authResult.response.body.$.refresh_token}}
