@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
+  <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+
+  <title>Insecure App</title>
+  <script src="client.js"></script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <h1>Secure App</h1>
+    <div class="row mb-1">
+      <div class="col-md-3">
+        <div>
+          <form id="loginForm">
+            <div class="form-outline">
+              <label class="form-label" for="user">Username</label>
+              <input type="text" id="user" name="user" class="form-control" value="charlie" />
+            </div>
+
+            <div class="form-outline">
+              <label class="form-label" for="pwd">Password</label>
+              <input type="password" id="pwd" name="pwd" class="form-control" value="passwords" />
+            </div>
+
+            <input id="btnLogin" class="btn btn-primary m-2" type="button" onClick="login()" value="Login">
+            <input id="btnLogout" class="btn btn-warning m-2" type="button" onClick="logout()" value="Logout">
+          </form>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row mb-1">
+          <div class="col-md-8">
+            <input id="btnGetData" class="btn btn-primary my-2" type="button" onclick="getData()" value="Read" />
+            <ul class="list-group" id="dataList">
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <form id="dataForm">
+              <div class="form-outline">
+                <div class="col">
+                  <label for="title" class="form-label">Title</label><br>
+                  <input type="text" class="form-control" id="title" name="title" rows="1"
+                    value="title here ..."></input>
+                </div>
+                <div class="col">
+                  <label for="content" class="form-label">Content</label><br>
+                  <textarea type="text" class="form-control" id="content" name="content"
+                    rows="6">content here...</textarea>
+                </div>
+              </div>
+
+              <div class="row mx-2">
+                <input id="btnWriteData" class="btn btn-primary m-2" type="button" onClick="postData()" value="POST!">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
