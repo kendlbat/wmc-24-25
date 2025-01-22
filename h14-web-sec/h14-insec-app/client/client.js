@@ -25,6 +25,15 @@ async function login() {
     }
 }
 
+async function logout() {
+    await fetch("/logout", {
+        method: "POST",
+    }).then((res) => {
+        if (res.ok) alert("logout successful");
+        else alert("logout failed");
+    });
+}
+
 async function getData() {
     console.log("load data from server");
     const resp = await fetch("/posts");

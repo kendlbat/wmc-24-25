@@ -49,12 +49,23 @@ app.post("/login", (req, res) => {
         res.status(200)
             .cookie("session-id", sessionId, {
                 expires,
+                httpOnly: true,
             })
             .json({});
     } else {
         logger.warn(`user ${username} failed to log in`);
         res.status(401).send();
     }
+});
+
+app.post("/logout", (req, res) => {
+    const sessionId = req.cookies["session-id"];
+
+    if (!SESSIONS[sessionId])
+        return res.status(401).json({ message: "access denied" });
+
+    SESSIONS[sessionId] = undefined;
+    res.status(200).clearCookie("session-id").send();
 });
 
 app.use((req, res, next) => {
