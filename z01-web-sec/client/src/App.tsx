@@ -41,7 +41,7 @@ function App() {
                     </Navbar.Collapse>
                 </Navbar>
             </header>
-            <main className="grow p-2 w-full">
+            <main className="grow p-2 w-full overflow-auto h-full">
                 {auth.isSignedIn ? (
                     <Suspense fallback={<Loading />}>
                         <Outlet />

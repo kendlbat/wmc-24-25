@@ -8,7 +8,8 @@
     "main": "server.mjs",
     "scripts": {
         "start": "node server.mjs",
-        "dev": "nodemon server.mjs"
+        "dev": "nodemon server.mjs",
+        "evil": "cd evil && node server.mjs"
     },
     "dependencies": {
         "express": "^4.21.2",

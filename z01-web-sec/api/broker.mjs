@@ -70,14 +70,6 @@ brokerRouter.post("/transfer", (req, res) => {
         return res.status(400).json({ error: "Missing amount or peer" });
     }
 
-    if (image && !image.startsWith("data:image/")) {
-        return res.status(400).json({ error: "Invalid image" });
-    }
-
-    if (amount <= 0) {
-        return res.status(400).json({ error: "Invalid amount" });
-    }
-
     if (!accounts[req.user.sub]) {
         accounts[req.user.sub] = { balance: 0, transactions: [] };
     }
