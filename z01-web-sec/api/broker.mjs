@@ -41,7 +41,7 @@ brokerRouter.get("/csrf", requireLogin, (req, res) => {
 brokerRouter.use(requireLogin);
 
 // Verify csrf token on all post requests
-brokerRouter.post("/csrf", (req, res, next) => {
+brokerRouter.post("*", (req, res, next) => {
     const { csrf } = req.body;
 
     try {
@@ -70,6 +70,8 @@ brokerRouter.post("/transfer", (req, res) => {
         return res.status(400).json({ error: "Missing amount or peer" });
     }
 
+    if (amount <= 0) return res.status(400).json({ error: "Invalid amount" });
+
     if (!accounts[req.user.sub]) {
         accounts[req.user.sub] = { balance: 0, transactions: [] };
     }
@@ -80,6 +82,10 @@ brokerRouter.post("/transfer", (req, res) => {
 
     if (!accounts[peer]) {
         accounts[peer] = { balance: 0, transactions: [] };
+    }
+
+    if (image && !image.startsWith("data:image/")) {
+        return res.status(400).json({ error: "Invalid image" });
     }
 
     accounts[req.user.sub].balance -= amount;

@@ -8,7 +8,7 @@ const SECRET =
     "PhaiChiemoh3eichahShiDai9Ie8he8loj5ooreeR6Ai7shu7Peixa1loeKeifaeg7ohKi6Voo2";
 const ALGORITHM = "HS256";
 const ACCESS_TOKEN_TTL = 60 * 60; // 60 minutes
-const REFRESH_TOKEN_TTL = 30; // 30 days
+const REFRESH_TOKEN_TTL = 30 * 24 * 60 * 60; // 30 days
 
 /**
  * Passwords being in plaintext here should not be counted as a vulnerability.
@@ -98,9 +98,19 @@ authRouter.post("/refresh", (req, res) => {
         return res.sendStatus(400);
     }
 
-    const valid = jwt.decode(refresh_token);
-
-    if (!valid) return res.sendStatus(401);
+    let valid;
+    try {
+        valid = jwt.verify(refresh_token, SECRET, {
+            algorithms: [ALGORITHM],
+            audience: "bergbroker-client",
+            issuer: "bergbroker",
+        });
+        if (!valid?.session) {
+            throw new Error("Invalid token");
+        }
+    } catch (e) {
+        return res.sendStatus(401);
+    }
 
     const access_token = jwt.sign(
         {
@@ -155,7 +165,7 @@ export const requireLogin = (req, res, next) => {
 // roles = ["admin"]
 // user needs to have at least one of the roles in the array
 export const requireRoles = (roles) => (req, res, next) => {
-    if (!req.user.roles.filter((role) => roles.includes(role)))
+    if (!req.user.roles.find((role) => roles.includes(role)))
         return res.sendStatus(403);
 
     next();

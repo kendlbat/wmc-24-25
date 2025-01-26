@@ -21,7 +21,7 @@ let valid;
 try {
     valid = jwt.verify(refresh_token, REFRESH_SECRET);
     
-    if (!valid) throw new Error("No token");
+    if (!valid?.session) throw new Error("No token");
 } catch (e) {
     return res.sendStatus(401);
 }
@@ -68,8 +68,6 @@ export const requireRoles = (roles) => (req, res, next) => {
 ```
 
 As an easter-egg, the `/actuator/heapdump` endpoint allows any user to create heap dumps. See [this talk](https://media.ccc.de/v/38c3-wir-wissen-wo-dein-auto-steht-volksdaten-von-volkswagen) why this is _incredibly_ secure and should be common practice.
-
-## Cross-site scripting (XSS)
 
 ## Cross-site request forgery (CSRF)
 
@@ -120,7 +118,17 @@ Content-Type: application/json
 }
 ```
 
-Without using this javascript: url-pattern, an attacker can still de-anonymize our users by using external urls.
+Without using this javascript: url-pattern, an attacker can still de-anonymize our users by using external urls. The main problem stems from piping untrusted user input into the href attribute of an a tag.
+
+```js
+if (image && !image.startsWith("data:image/")) {
+    return res.status(400).json({ error: "Invalid image" });
+}
+```
+
+and remove the a tag
+
+I also tried doing XSS by using a rogue svg image, but browsers generally do not allow images to run JavaScript.
 
 ## Client issues
 

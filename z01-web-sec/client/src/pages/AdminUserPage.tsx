@@ -12,13 +12,6 @@ const AdminUserPage: React.FC = () => {
                 res.json().then((data) => {
                     setUsers(data);
                 });
-            } else {
-                setUsers({
-                    john: {
-                        password: "betonmischer",
-                        roles: ["example"],
-                    },
-                });
             }
         });
     }, [auth]);
