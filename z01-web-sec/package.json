@@ -1,0 +1,20 @@
+{
+    "name": "bergbroker",
+    "version": "1.0.0",
+    "description": "Security is our passion.",
+    "license": "ISC",
+    "author": "Tobias Kendlbacher",
+    "type": "module",
+    "main": "server.mjs",
+    "scripts": {
+        "start": "node server.mjs",
+        "dev": "nodemon server.mjs"
+    },
+    "dependencies": {
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.9"
+    }
+}

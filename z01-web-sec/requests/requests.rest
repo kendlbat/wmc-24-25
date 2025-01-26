@@ -1,0 +1,91 @@
+### 
+@baseurl = http://localhost:8080/api
+
+### Login
+
+# @name loginRequest
+
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "password"
+}
+
+###
+@access_token = {{loginRequest.response.body.$.access_token}}
+@refresh_token = {{loginRequest.response.body.$.refresh_token}}
+
+### Refresh Token
+POST {{baseurl}}/auth/refresh
+Content-Type: application/json
+
+{
+    "refresh_token": "{{refresh_token}}"
+}
+
+### Get User
+
+GET {{baseurl}}/users/me
+Authorization: Bearer {{access_token}}
+
+### Get Users
+
+GET {{baseurl}}/users
+Authorization: Bearer {{access_token}}
+
+### Update my password
+
+PUT {{baseurl}}/users/me
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "password": "betonmischer"
+}
+
+##### Broker
+
+### Create CSRF token
+
+# @name csrfRequest
+GET {{baseurl}}/broker/csrf
+Authorization: Bearer {{access_token}}
+
+###
+
+@csrf_token = {{csrfRequest.response.body.$.csrf_token}}
+
+### Get Account Details
+
+GET {{baseurl}}/broker/account
+Authorization: Bearer {{access_token}}
+
+### Deposit money
+
+# The ability to deposit money via a simple post call is not a vulnerability as this is only for demonstration purposes.
+# In a real-world scenario, this would be done via a payment provider.
+
+POST {{baseurl}}/broker/deposit
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "amount": 100,
+    "csrf": "{{csrf_token}}"
+}
+
+### Make a transfer
+
+# Note that you can attach an image to the request
+
+POST {{baseurl}}/broker/transfer
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+    "amount": 1,
+    "peer": "admin",
+    "csrf": "{{csrf_token}}"
+}
