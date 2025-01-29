@@ -3,12 +3,12 @@ WORKDIR /app
 
 FROM base as server-deps
 COPY package*.json .
-RUN npm ci --only=production
+RUN npm ci --only=production --omit=dev
 
 FROM base as client-build
 WORKDIR /app/client
 COPY client/package*.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY client .
 RUN npm run build
 
