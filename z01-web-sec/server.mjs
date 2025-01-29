@@ -8,6 +8,7 @@ import { brokerRouter } from "./api/broker.mjs";
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "client", "dist")));
 app.use(
     express.json({
         limit: "10mb",
