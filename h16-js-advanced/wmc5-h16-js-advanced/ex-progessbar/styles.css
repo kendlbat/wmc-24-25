@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.tracking-area {
+  position: relative;
+  width: 80%;
+  height: 50%;
+  background: rgb(231, 208, 208);
+  border: 2px solid black;
+  box-sizing: content-box;
+}
+
+.dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: red;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #f3f3f3;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.progress-container {
+  width: 100%;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 20px;
+  background: #4caf50;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ProgressBar Demo</title>
+        <script src="./client.js"></script>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+
+    <body onload="initTrackingArea()">
+        <h1>WMC5 JS-Advanced</h1>
+        <header>
+            <div>
+                <label for="duration">Duration (in seconds): </label>
+                <input type="number" id="duration" value="3" min="1" max="30" />
+            </div>
+            <div>
+                <p>
+                    Simulate a calculation and update the ProgressBar
+                    periodically
+                </p>
+                <button onclick="runBlocking()">blocking implementation</button>
+                <button onclick="runMacroTask()">
+                    macroTask implementation
+                </button>
+                <button onclick="runMicroTask()">
+                    microTask implementation
+                </button>
+                <button onclick="runRequestAnimationFrame()">
+                    animationRequestFrame implementation
+                </button>
+                <button onclick="runWebWorker()">
+                    webWorker implementation
+                </button>
+            </div>
+            <div>
+                <p id="elapsedTime">not set</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="tracking-area" id="trackingArea"></div>
+        </main>
+
+        <footer>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </footer>
+    </body>
+</html>
