@@ -1,0 +1,83 @@
+import express from "express";
+import http from "http";
+import mongoose from "mongoose";
+import { createTerminus } from "@godaddy/terminus";
+
+import productsHandlers from "./api/products-handlers.js";
+
+import { logger } from "./logging.js";
+import { setupDBConnection, dropCurrentDatabase } from "./db/database.js";
+
+logger.info("ProductService - Starting up...");
+
+// Take configuration from environment variables
+// or use hardcoded default value
+const HOSTNAME = process.env.BINDADDRESS || "0.0.0.0";
+const PORT = process.env.PORT || 5000;
+const MONGODB_CONNECTION_STRING =
+    process.env.MONGODB_CONNECTION_STRING ||
+    "mongodb://127.0.0.1:27017/online-shop-products";
+const MONGODB_RECREATE = process.env.MONGODB_RECREATE === "true";
+
+const app = express();
+
+app.use(express.json());
+
+// simple middleware to add custom header indicating the host name that answered the response
+app.use((_req, res, next) => {
+    res.setHeader(
+        "X-Node-Id",
+        process.env.HOSTNAME || process.env.COMPUTERNAME || "n/a"
+    );
+    next();
+});
+
+app.get("/api/products", productsHandlers.getAll);
+app.get("/api/products/:id", productsHandlers.getById);
+app.post("/api/products", productsHandlers.create);
+app.delete("/api/products/:id", productsHandlers.deleteById);
+
+const httpServer = http.createServer(app);
+
+setupDBConnection(MONGODB_CONNECTION_STRING, MONGODB_RECREATE);
+
+httpServer.dropCurrentDatabase = async () => {
+    await dropCurrentDatabase(MONGODB_CONNECTION_STRING);
+};
+
+createTerminus(httpServer, {
+    healthChecks: {
+        "/health": async function () {
+            const errors = [];
+            return Promise.all(
+                [mongoose.connection.db.admin().ping()].map((p) =>
+                    p.catch((error) => {
+                        errors.push(error);
+                        return undefined;
+                    })
+                )
+            ).then(() => {
+                if (errors.length) {
+                    throw new HealthCheckError("healthcheck failed", errors);
+                }
+            });
+        },
+    },
+    statusError: 500,
+    onSignal: async () => {
+        logger.info("Backend - Server is starting cleanup...");
+
+        await mongoose.connection.close();
+    },
+    onShutdown: async () => {
+        logger.info("Backend - Cleanup finished, server is shutting down...");
+    },
+    timeout: 5000,
+    signals: ["SIGINT", "SIGTERM"],
+});
+
+httpServer.listen(PORT, HOSTNAME, () => {
+    logger.info(`ProductService - Running on port ${PORT}...`);
+});
+
+export default httpServer;

@@ -1,0 +1,8 @@
+@products = http://localhost:5000/api/products
+@ratings = http://localhost:6000/api/products/1234/ratings
+
+### Get all products
+GET {{products}}
+
+### Get all ratings
+GET {{ratings}}

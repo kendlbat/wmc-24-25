@@ -1,0 +1,22 @@
+@baseurl = http://127.0.0.1:8080/api
+
+### GET all products
+GET {{baseurl}}/products
+
+### POST valid product
+POST {{baseurl}}/products
+Content-Type: application/json
+
+{
+    "productId": "0815",
+    "name": "Laserpointer",
+    "price": 49.90
+}
+
+### GET product by productId
+GET {{baseurl}}/products/1234
+
+
+### DELETE product by id
+DELETE {{baseurl}}/products/1234
+

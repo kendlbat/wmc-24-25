@@ -1,0 +1,24 @@
+{
+  "name": "ex-online-shop",
+  "version": "1.0.0",
+  "description": "Backend using Express and Mongoose",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env LOG_LEVEL=debug nodemon server.js",
+    "fill-demo-data": "node db/fill-demo-data.js"
+  },
+  "type": "module",
+  "author": "KON+KAA",
+  "license": "ISC",
+  "dependencies": {
+    "@godaddy/terminus": "^4.12.1",
+    "cross-env": "^7.0.3",
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.5"
+  }
+}
