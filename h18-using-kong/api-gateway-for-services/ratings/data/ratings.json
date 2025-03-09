@@ -1,0 +1,14 @@
+[
+    {
+        "productId": "1234",
+        "numStars": 3
+    },
+    {
+        "productId": "1234",
+        "numStars": 5
+    },
+    {
+        "productId": "5678",
+        "numStars": 4
+    }
+]

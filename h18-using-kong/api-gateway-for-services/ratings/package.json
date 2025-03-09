@@ -1,0 +1,19 @@
+{
+    "name": "ratings-service",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "Tobias Kendlbacher",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "fill-demo-data": "node db/fill-demo-data.js"
+    },
+    "dependencies": {
+        "@godaddy/terminus": "^4.12.1",
+        "express": "^4.21.2",
+        "mongoose": "^8.11.0",
+        "winston": "^3.17.0"
+    }
+}

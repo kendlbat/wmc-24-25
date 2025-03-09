@@ -1,0 +1,17 @@
+@baseurl = http://127.0.0.1:8080/api
+
+
+### GET all ratings for product 1234
+GET {{baseurl}}/products/1234/ratings
+
+### POST valid rating
+POST {{baseurl}}/products/1234/ratings
+Content-Type: application/json
+
+{
+    "productId": "1234",    
+    "numStars": 3
+}
+
+### GET summary of ratings for product 1234
+GET {{baseurl}}/products/1234/ratings/summary

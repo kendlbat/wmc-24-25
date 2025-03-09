@@ -1,0 +1,23 @@
+services:
+    product-db:
+        image: mongo:latest
+    rating-db:
+        image: mongo:latest
+    product-service:
+        build: ./products
+        environment:
+            - MONGODB_CONNECTION_STRING=mongodb://product-db:27017/online-shop-products
+            - PORT=8080
+        depends_on:
+            - product-db
+        ports:
+            - 5000:8080
+    rating-service:
+        build: ./ratings
+        environment:
+            - MONGODB_CONNECTION_STRING=mongodb://rating-db:27017/online-shop-ratings
+            - PORT=8080
+        depends_on:
+            - rating-db
+        ports:
+            - 5001:8080

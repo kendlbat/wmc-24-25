@@ -1,0 +1,13 @@
+services:
+    web:
+        build: .
+        ports:
+            - "8080:8080"
+        environment:
+            - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/online-shop
+        depends_on:
+            - mongo
+    mongo:
+        image: mongo:latest
+        ports:
+            - "27017:27017"

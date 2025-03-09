@@ -1,0 +1,12 @@
+[
+    {
+        "productId": "1234",
+        "name": "Keyboard",
+        "price": 19.90
+    },
+    {
+        "productId": "5678",
+        "name": "Bluetooth Mouse",
+        "price": 24.90
+    }
+]
