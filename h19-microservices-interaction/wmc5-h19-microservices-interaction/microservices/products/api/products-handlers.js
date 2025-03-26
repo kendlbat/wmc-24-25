@@ -10,7 +10,7 @@ const getSummaryForProductREST = async (productId) => {
     return await fetch(
         RATING_SERVICE_URL + "/api/products/" + productId + "/ratings/summary"
     ).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (!res.ok) throw new Error();
         return res.json();
     });
@@ -24,7 +24,7 @@ const options = {
 const breaker = new CircuitBreaker(getSummaryForProductREST, options);
 
 breaker.fallback((productId) => {
-    return { rating: undefined, count: undefined };
+    return { rating: null, count: null };
 });
 
 breaker.on("open", () => {
