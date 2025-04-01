@@ -2,7 +2,7 @@
 
 Erstellen Sie eine PWA, indem Sie folgendes Tutorial durcharbeiten:
 
-* <https://learn.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/how-to/>
+*   <https://learn.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/how-to/>
 
 Erweitern Sie in weiterer Folge die PWA, indem Sie die App mit Hilfe von Bootstrap
 stylen und _responsive_ gestalten.
