@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+    color: white;
+    background-color: #1a202c;
+}
+
+.card-image-contain > img {
+    object-fit: contain;
+}
